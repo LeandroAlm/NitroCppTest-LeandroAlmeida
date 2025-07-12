@@ -135,7 +135,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Rectangles_Example.json" />
-    <None Include="Data\Test.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

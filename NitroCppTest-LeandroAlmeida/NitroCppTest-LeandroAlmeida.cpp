@@ -51,8 +51,15 @@ bool CalculateItersection(const vector<shared_ptr<CustomRectangle>>& _rects, vec
         ColoredPrintf::CPrint((callbackStack[i] + 1), ColoredPrintf::Cyan);
     }
 
-    printf(" at (%.2f, %.2f), w=%.2f, h=%.2f;\n", Intersection->GetLeftTopCorner().x, Intersection->GetLeftTopCorner().y,
-        Intersection->GetRightBottomCorner().x - Intersection->GetLeftTopCorner().x, Intersection->GetRightBottomCorner().y - Intersection->GetLeftTopCorner().y);
+    cout << " at (";
+    ColoredPrintf::CPrint(Intersection->GetLeftTopCorner().x, ColoredPrintf::Green);
+    cout << ", ";
+    ColoredPrintf::CPrint(Intersection->GetLeftTopCorner().y, ColoredPrintf::Green);
+    cout << "), w=";
+    ColoredPrintf::CPrint((Intersection->GetRightBottomCorner().x - Intersection->GetLeftTopCorner().x), ColoredPrintf::Yellow);
+    cout << ", h=";
+    ColoredPrintf::CPrint((Intersection->GetRightBottomCorner().y - Intersection->GetLeftTopCorner().y), ColoredPrintf::Yellow);
+    cout << ";\n";
 
     return true;
 }
