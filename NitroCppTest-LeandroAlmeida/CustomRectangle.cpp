@@ -3,13 +3,15 @@
 #include "CustomRectangle.h"
 #include <iostream>
 
-CustomRectangle::CustomRectangle(Position2D x1, Position2D x2)
+CustomRectangle::CustomRectangle(const Position2D x1, const Position2D x2, bool isToPrint)
 	: LeftTopCorner(x1), RightBottomCorner(x2)
 {
 	UpdateWidthAndHeight();
 
-	printf("Rectangle created on position (%.2f, %.2f) ", LeftTopCorner.x, LeftTopCorner.y);
-	printf("with the size (%.2f, %.2f)\n", width, height);
+	if (!isToPrint)
+		return;
+
+	printf("(%.2f, %.2f), w=%.2f, h=%.2f;\n", LeftTopCorner.x, LeftTopCorner.y, width, height);
 }
 
 bool CustomRectangle::Verify() const

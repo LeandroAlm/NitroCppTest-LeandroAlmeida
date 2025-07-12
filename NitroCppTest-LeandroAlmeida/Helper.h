@@ -27,6 +27,18 @@ public:
 		Yellow = 33
 	};
 
+	/// <summary>
+	/// Print a string
+	/// </summary>
+	/// <param name="text">text value</param>
+	/// <param name="textColor">Color e.g. ColoredPrintf.Cyan</param>
 	static void CPrint(const string& text, Colors textColor);
+	
+	/// <summary>
+	/// Print an int
+	/// </summary>
+	/// <param name="text">int value</param>
+	/// <param name="textColor">Color e.g. ColoredPrintf.Cyan</param>
+	static void CPrint(const int& text, Colors textColor);
 
 };

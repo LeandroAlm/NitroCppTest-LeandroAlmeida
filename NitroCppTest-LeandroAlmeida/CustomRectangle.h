@@ -13,7 +13,7 @@ private:
 	double height = 0;
 
 public:
-	CustomRectangle(Position2D x1, Position2D x2);
+	CustomRectangle(const Position2D x1, const Position2D x2, bool isToPrint = false);
 	bool Verify() const;
 
 	void UpdateWidthAndHeight();
