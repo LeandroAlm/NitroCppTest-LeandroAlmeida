@@ -10,10 +10,10 @@ using namespace std;
 class Position2D
 {
 public:
-	double x;
-	double y;
+	int x;
+	int y;
 
-	Position2D(double _x, double _y) : x(_x), y(_y) {}
+	Position2D(int _x, int _y) : x(_x), y(_y) {}
 };
 
 class ColoredPrintf
@@ -32,13 +32,14 @@ public:
 	/// </summary>
 	/// <param name="text">text value</param>
 	/// <param name="textColor">Color e.g. ColoredPrintf.Cyan</param>
-	static void CPrint(const string& text, Colors textColor);
+	static void CPrint(const string& text, const Colors& textColor);
 	
 	/// <summary>
 	/// Print an int
 	/// </summary>
 	/// <param name="text">int value</param>
 	/// <param name="textColor">Color e.g. ColoredPrintf.Cyan</param>
-	static void CPrint(const int& text, Colors textColor);
+	static void CPrint(const int& text, const Colors& textColor);
 
+	static void CPrintRectancgle(const class CustomRectangle& rect);
 };

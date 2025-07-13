@@ -28,9 +28,17 @@ This project was created as part of an assessment. It demonstrates my understand
 5. **VS Code**:
     - In case of preference of **VS Code IDE**, please follow the steps: https://code.visualstudio.com/docs/languages/cpp
 
+6. **Compiler issues**:
+    - If the compiler give some errors, you may need add the follow paths to environment variables, on variable **PATH*
+        - ...\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build
+        - ...\Microsoft Visual Studio\2022\Community\Common7\Tools
+        - ...\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64
+
 ## Usage
 
-- Once the project is compiled and running, you can give a file location and the application will run as expexted.
+- Once the project is compiled and running, you can use the application and follow the steps.
+- There are some commands to guide you through the application.
+- **JSON FILES** must be in Data folder, otherwise the application will not consider them.
 
 ## Author
 

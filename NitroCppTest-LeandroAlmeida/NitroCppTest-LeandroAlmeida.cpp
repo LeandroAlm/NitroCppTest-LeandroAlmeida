@@ -14,7 +14,7 @@ using JSON = nlohmann::json;
 /// Calculate intersections between rectangles
 /// </summary>
 /// <param name="_rects">All rectacngles to verify intersection</param>
-bool CalculateItersection(const vector<shared_ptr<CustomRectangle>>& _rects, vector<int> callbackStack)
+bool CalculateItersection(const vector<shared_ptr<CustomRectangle>>& _rects, vector<int>& callbackStack)
 {
     auto x1 = _rects[0]->GetLeftTopCorner().x;
     auto x2 = _rects[0]->GetRightBottomCorner().x;
@@ -51,15 +51,8 @@ bool CalculateItersection(const vector<shared_ptr<CustomRectangle>>& _rects, vec
         ColoredPrintf::CPrint((callbackStack[i] + 1), ColoredPrintf::Cyan);
     }
 
-    cout << " at (";
-    ColoredPrintf::CPrint(Intersection->GetLeftTopCorner().x, ColoredPrintf::Green);
-    cout << ", ";
-    ColoredPrintf::CPrint(Intersection->GetLeftTopCorner().y, ColoredPrintf::Green);
-    cout << "), w=";
-    ColoredPrintf::CPrint((Intersection->GetRightBottomCorner().x - Intersection->GetLeftTopCorner().x), ColoredPrintf::Yellow);
-    cout << ", h=";
-    ColoredPrintf::CPrint((Intersection->GetRightBottomCorner().y - Intersection->GetLeftTopCorner().y), ColoredPrintf::Yellow);
-    cout << ";\n";
+    cout << " at ";
+    ColoredPrintf::CPrintRectancgle(*Intersection);
 
     return true;
 }
@@ -69,7 +62,7 @@ bool CalculateItersection(const vector<shared_ptr<CustomRectangle>>& _rects, vec
 /// </summary>
 /// <param name="filePath"></param>
 /// <returns></returns>
-bool fileExists(const std::string& filePath) {
+bool FileExists(const std::string& filePath) {
     ifstream file(filePath);
     return file.is_open();
 }
@@ -89,7 +82,7 @@ void PrintTitle()
 /// <summary>
 /// Keep console open and print message to press Enter
 /// </summary>
-void KeepConsoleWaiting()
+void PauseConsole()
 {
     ColoredPrintf::CPrint("\n>  ", ColoredPrintf::Yellow);
     system("pause");
@@ -146,7 +139,7 @@ string PrintMenu()
             cout << " Type 'test' to quick test the default file Rectangles_Example.json.";
             ColoredPrintf::CPrint("\n> ", ColoredPrintf::Yellow);
             cout << " Type 'exit' to close the application.";
-            KeepConsoleWaiting();
+            PauseConsole();
         }
         else if (input == "test")
         {
@@ -154,7 +147,7 @@ string PrintMenu()
 
             filePath = "Data/Rectangles_Example.json";
 
-            if (!fileExists(filePath))
+            if (!FileExists(filePath))
             {
                 system("cls");
                 isDisplayErrorOn = true;
@@ -173,7 +166,7 @@ string PrintMenu()
         {
             filePath = "Data/" + input;
 
-            if (!fileExists(filePath))
+            if (!FileExists(filePath))
             {
                 system("cls");
                 isDisplayErrorOn = true;
@@ -184,7 +177,7 @@ string PrintMenu()
                 isInMenu = false;
             }
         }
-        }
+    }
 
     return filePath;
 }
@@ -195,7 +188,7 @@ string PrintMenu()
 /// <param name="allRects">All recatgles loaded from JSON</param>
 /// <param name="callbackStack">Current ids in stack</param>
 /// <param name="id">Current id</param>
-void CallbackIntersectionDetection(const vector<shared_ptr<CustomRectangle>>& allRects, vector<int> callbackStack, const int id)
+void CallbackCombineRectangles(const vector<shared_ptr<CustomRectangle>>& allRects, vector<int>& callbackStack, const int id)
 {
     for (int i = id; i <= allRects.size() - 1; i++)
     {
@@ -208,7 +201,7 @@ void CallbackIntersectionDetection(const vector<shared_ptr<CustomRectangle>>& al
         }
 
         if (callbackStack.size() <  2 || CalculateItersection(rects, callbackStack))
-            CallbackIntersectionDetection(allRects, callbackStack, i + 1);
+            CallbackCombineRectangles(allRects, callbackStack, i + 1);
         callbackStack.pop_back();
     }
 }
@@ -218,7 +211,7 @@ void CallbackIntersectionDetection(const vector<shared_ptr<CustomRectangle>>& al
 /// </summary>
 /// <param name="fileName">json file name e.g. Rectangles_Example.json</param>
 /// <returns>Rectangles found in json file</returns>
-vector<shared_ptr<CustomRectangle>> LoadAllRectanglesFromJson(string fileName)
+vector<shared_ptr<CustomRectangle>> LoadAllRectanglesFromJson(const string& fileName)
 {
     vector<shared_ptr<CustomRectangle>> AllRects;
 
@@ -247,8 +240,8 @@ vector<shared_ptr<CustomRectangle>> LoadAllRectanglesFromJson(string fileName)
         }
 
         cout << " created at ";
-        AllRects.push_back(make_shared<CustomRectangle>(Position2D(RectSpecs["x"], RectSpecs["y"]),
-            Position2D((double)RectSpecs["x"] + RectSpecs["w"], (double)RectSpecs["y"] + RectSpecs["h"]), true));
+        AllRects.push_back(make_shared<CustomRectangle>(Position2D((int)RectSpecs["x"], (int)RectSpecs["y"]),
+            Position2D((int)RectSpecs["x"] + (int)RectSpecs["w"], (int)RectSpecs["y"] + (int)RectSpecs["h"]), true));
 
         count++;
     }
@@ -276,10 +269,10 @@ int main()
             ColoredPrintf::CPrint("######################################\n\n", ColoredPrintf::Cyan);
 
             vector<int> callbackStack;
-            CallbackIntersectionDetection(AllRects, callbackStack, 0);
+            CallbackCombineRectangles(AllRects, callbackStack, 0);
 
             // just to keep cmd open
-            KeepConsoleWaiting();
+            PauseConsole();
         }
         else
         {
@@ -288,7 +281,7 @@ int main()
             ColoredPrintf::CPrint("JSON with bad format or less than 2 rectangles found.\n", ColoredPrintf::Red);
 
             // just to keep cmd open
-            KeepConsoleWaiting();
+            PauseConsole();
         }
     }
 

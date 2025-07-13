@@ -11,15 +11,7 @@ CustomRectangle::CustomRectangle(const Position2D x1, const Position2D x2, bool 
 	if (!isToPrint)
 		return;
 
-	cout << "(";
-	ColoredPrintf::CPrint(LeftTopCorner.x, ColoredPrintf::Green);
-	cout << ", ";
-	ColoredPrintf::CPrint(LeftTopCorner.y, ColoredPrintf::Green);
-	cout << "), w=";
-	ColoredPrintf::CPrint(width, ColoredPrintf::Yellow);
-	cout << ", h=";
-	ColoredPrintf::CPrint(height, ColoredPrintf::Yellow);
-	cout << ";\n";
+	ColoredPrintf::CPrintRectancgle(*this);
 }
 
 bool CustomRectangle::Verify() const

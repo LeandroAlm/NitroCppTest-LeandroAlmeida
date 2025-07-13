@@ -40,5 +40,8 @@
     <None Include="Data\Rectangles_Example.json">
       <Filter>Arquivos de Recurso</Filter>
     </None>
+    <None Include="..\README.md">
+      <Filter>Arquivos de Recurso</Filter>
+    </None>
   </ItemGroup>
 </Project>
