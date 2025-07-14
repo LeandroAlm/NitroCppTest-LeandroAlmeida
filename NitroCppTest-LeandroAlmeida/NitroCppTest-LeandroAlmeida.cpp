@@ -17,26 +17,26 @@ using JSON = nlohmann::json;
 bool CalculateItersection(const vector<shared_ptr<CustomRectangle>>& _rects, vector<int>& callbackStack)
 {
     auto x1 = _rects[0]->GetLeftTopCorner().x;
-    auto x2 = _rects[0]->GetRightBottomCorner().x;
+    auto x2 = _rects[0]->GetLeftTopCorner().x + _rects[0]->GetWidth();
     auto y1 = _rects[0]->GetLeftTopCorner().y;
-    auto y2 = _rects[0]->GetRightBottomCorner().y;
+    auto y2 = _rects[0]->GetLeftTopCorner().y + _rects[0]->GetHeight();
 
     for (int i = 1; i < _rects.size(); i++)
     {
         if (_rects[i]->GetLeftTopCorner().x > x1)
             x1 = _rects[i]->GetLeftTopCorner().x;
 
-        if (_rects[i]->GetRightBottomCorner().x < x2)
-            x2 = _rects[i]->GetRightBottomCorner().x;
+        if (_rects[i]->GetLeftTopCorner().x + _rects[i]->GetWidth() < x2)
+            x2 = _rects[i]->GetLeftTopCorner().x + _rects[i]->GetWidth();
 
         if (_rects[i]->GetLeftTopCorner().y > y1)
             y1 = _rects[i]->GetLeftTopCorner().y;
 
-        if (_rects[i]->GetRightBottomCorner().y < y2)
-            y2 = _rects[i]->GetRightBottomCorner().y;
+        if (_rects[i]->GetLeftTopCorner().y + _rects[i]->GetHeight() < y2)
+            y2 = _rects[i]->GetLeftTopCorner().y + _rects[i]->GetHeight();
     }
 
-    auto Intersection = make_shared<CustomRectangle>(Position2D(x1, y1), Position2D(x2, y2));
+    auto Intersection = make_shared<CustomRectangle>(Position2D(x1, y1), x2-x1, y2 - y1);
 
     // In case of no intersection
     if (!Intersection->Verify())
@@ -84,7 +84,7 @@ void PrintTitle()
 /// </summary>
 void PauseConsole()
 {
-    ColoredPrintf::CPrint("\n>  ", ColoredPrintf::Yellow);
+    ColoredPrintf::CPrint("\n> ", ColoredPrintf::Yellow);
     system("pause");
     system("cls");
 }
@@ -132,13 +132,13 @@ string PrintMenu()
 
             PrintTitle();
             ColoredPrintf::CPrint("\n> ", ColoredPrintf::Yellow);
-            cout << " The application reads a json file with a specific format.";
+            cout << "The application reads a json file with a specific format.";
             ColoredPrintf::CPrint("\n> ", ColoredPrintf::Yellow);
-            cout << " The JSON file must be in Data/ folder.";
+            cout << "The JSON file should be in Data/ folder.";
             ColoredPrintf::CPrint("\n> ", ColoredPrintf::Yellow);
-            cout << " Type 'test' to quick test the default file Rectangles_Example.json.";
+            cout << "Type 'test' to quick test the default file Rectangles_Example.json.";
             ColoredPrintf::CPrint("\n> ", ColoredPrintf::Yellow);
-            cout << " Type 'exit' to close the application.";
+            cout << "Type 'exit' to close the application.\n";
             PauseConsole();
         }
         else if (input == "test")
@@ -148,15 +148,9 @@ string PrintMenu()
             filePath = "Data/Rectangles_Example.json";
 
             if (!FileExists(filePath))
-            {
-                system("cls");
                 isDisplayErrorOn = true;
-            }
             else
-            {
-                system("cls");
                 isInMenu = false;
-            }
         }
         else if (input == "exit")
         {
@@ -167,16 +161,12 @@ string PrintMenu()
             filePath = "Data/" + input;
 
             if (!FileExists(filePath))
-            {
-                system("cls");
                 isDisplayErrorOn = true;
-            }
             else
-            {
-                system("cls");
                 isInMenu = false;
-            }
         }
+
+        system("cls");
     }
 
     return filePath;
@@ -239,9 +229,18 @@ vector<shared_ptr<CustomRectangle>> LoadAllRectanglesFromJson(const string& file
             break;
         }
 
-        cout << " created at ";
-        AllRects.push_back(make_shared<CustomRectangle>(Position2D((int)RectSpecs["x"], (int)RectSpecs["y"]),
-            Position2D((int)RectSpecs["x"] + (int)RectSpecs["w"], (int)RectSpecs["y"] + (int)RectSpecs["h"]), true));
+        auto tempRect = make_shared<CustomRectangle>(Position2D(RectSpecs["x"], RectSpecs["y"]), RectSpecs["w"], RectSpecs["h"], true);
+
+        if (tempRect->Verify())
+        {
+            AllRects.push_back(tempRect);
+            cout << " created at ";
+            ColoredPrintf::CPrintRectancgle(*tempRect);
+        }
+        else
+        {
+            cout << " with wrong size, this rectangle was ignored.\n";
+        }
 
         count++;
     }

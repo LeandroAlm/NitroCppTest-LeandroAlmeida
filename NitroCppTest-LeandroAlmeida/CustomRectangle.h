@@ -8,18 +8,16 @@ class CustomRectangle
 {
 private:
 	class Position2D LeftTopCorner;
-	Position2D RightBottomCorner;
 	int width = 0;
 	int height = 0;
 
 public:
-	CustomRectangle(const Position2D x1, const Position2D x2, bool isToPrint = false);
+	CustomRectangle(const Position2D x1, const int _width, const int _height, bool isToPrint = false) :
+		LeftTopCorner(x1), width(_width), height(_height) {};
 	bool Verify() const;
 
-	void UpdateWidthAndHeight();
-
 	Position2D GetLeftTopCorner() const { return LeftTopCorner; };
-	Position2D GetRightBottomCorner() const { return RightBottomCorner; };
+	int GetWidth() const { return width; };
+	int GetHeight() const { return height; };
 
 };
-

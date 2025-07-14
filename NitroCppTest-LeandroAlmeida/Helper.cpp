@@ -24,8 +24,8 @@ void ColoredPrintf::CPrintRectancgle(const CustomRectangle& rect)
 	cout << ", ";
 	ColoredPrintf::CPrint(rect.GetLeftTopCorner().y, ColoredPrintf::Green);
 	cout << "), w=";
-	ColoredPrintf::CPrint(rect.GetRightBottomCorner().x - rect.GetLeftTopCorner().x, ColoredPrintf::Yellow);
+	ColoredPrintf::CPrint(rect.GetWidth(), ColoredPrintf::Yellow);
 	cout << ", h=";
-	ColoredPrintf::CPrint(rect.GetRightBottomCorner().y - rect.GetLeftTopCorner().y, ColoredPrintf::Yellow);
+	ColoredPrintf::CPrint(rect.GetHeight(), ColoredPrintf::Yellow);
 	cout << ";\n";
 }	
